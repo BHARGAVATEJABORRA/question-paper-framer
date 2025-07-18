@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question Paper Generator</title>
+    <title>Secure Login System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
         }
         
         body {
-            background-image: url('images/66666.jpg');
+            background: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80') no-repeat center center fixed;
             background-size: cover;
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: #333;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            overflow-x: hidden;
-            transition: background-color 0.5s ease;
         }
         
         body::before {
@@ -31,744 +30,265 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 0;
         }
         
-        .header {
-            background-color: rgba(120, 118, 118, 0.85);
+        .admin-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #1a2a6c;
             color: white;
-            padding: 15px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px 0;
-        }
-        
-        nav ul {
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 10;
             display: flex;
-            justify-content: flex-end;
-            list-style: none;
-            flex-wrap: wrap;
+            align-items: center;
         }
         
-        nav li {
-            margin: 0 10px;
+        .admin-btn i {
+            margin-right: 8px;
         }
         
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            display: block;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-        
-        nav a:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            text-align: center;
-            margin: 30px 0 20px;
-            color: #fff;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-            position: relative;
-        }
-        
-        .logo::after {
-            content: '';
-            display: block;
-            width: 150px;
-            height: 4px;
-            background: linear-gradient(to right, #3498db, #2ecc71);
-            border-radius: 2px;
-            margin: 10px auto;
-        }
-        
-        .main-content {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        .login-box {
+            background-color: rgba(150, 140, 140, 0.9);
             padding: 30px;
-            margin-top: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s ease;
+            border: 8px solid black;
+            width: 400px;
+            position: relative;
+            z-index: 1;
         }
-        
-        .form-title {
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid rgb(122, 43, 43);
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        button {
+            background-color: #c01b52;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100px;
+            font-weight: bold;
+        }
+
+        .cancelbtn {
+            background-color: #f44336;
+        }
+
+        .center-text {
             text-align: center;
-            margin-bottom: 25px;
-            color: #fff;
-            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #1a1a1a;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
             position: relative;
             padding-bottom: 10px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
         
-        .form-title:after {
+        .center-text::after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(to right, #3498db, #2ecc71);
-            border-radius: 2px;
+            width: 80px;
+            height: 3px;
+            background: #c01b52;
+        }
+
+        .form-footer {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .form-footer a {
+            color: #1a2a6c;
+            text-decoration: none;
+            margin-left: 5px;
+            font-weight: bold;
         }
         
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #fff;
-            font-size: 1.1rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            backdrop-filter: blur(5px);
-        }
-        
-        .form-control:focus {
-            border-color: #3498db;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
-            background: rgba(255, 255, 255, 0.25);
-        }
-        
-        .btn-container {
+        .button-container {
             display: flex;
-            justify-content: center;
-            margin-top: 30px;
+            justify-content: space-between;
         }
         
-        .btn {
-            padding: 14px 35px;
-            background: linear-gradient(45deg, #3498db, #2ecc71);
+        .remember-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .remember-container label {
+            margin-left: 8px;
+            color: #333;
+        }
+        
+        /* Admin login specific styles */
+        .admin-login .center-text {
+            color: #1a2a6c;
+        }
+        
+        .admin-login .center-text::after {
+            background: #1a2a6c;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #c01b52;
             color: white;
             border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-            background: linear-gradient(45deg, #2980b9, #27ae60);
-        }
-        
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 40px;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(25deg);
-            transition: all 0.5s;
-        }
-        
-        .btn:hover::after {
-            left: 120%;
-        }
-        
-        .info-box {
-            background: linear-gradient(135deg, rgba(52, 152, 219, 0.7), rgba(142, 68, 173, 0.7));
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .info-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        
-        .info-content {
-            line-height: 1.6;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        
-        .stats {
+            font-weight: bold;
+            z-index: 10;
             display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            text-align: center;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            min-width: 120px;
-            margin: 10px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: transform 0.3s;
-        }
-        
-        .stat-item:hover {
-            transform: translateY(-5px);
-            background-color: rgba(255, 255, 255, 0.25);
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-        
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            color: #fff;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-            padding: 20px 0;
-        }
-        
-        /* Fixed positioning for thank you container */
-        .thank-you-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('images/thanks.jpg') no-repeat center center;
-            background-size: cover;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
         }
         
-        .thank-you-container.active {
-            opacity: 1;
-            pointer-events: all;
+        .back-btn i {
+            margin-right: 8px;
         }
         
-        .thank-you-message {
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
+        .error-message {
+            color: #ff0000;
+            background: rgba(255, 200, 200, 0.7);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
             text-align: center;
-            max-width: 500px;
-            margin: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transform: translateY(20px);
-            transition: transform 0.5s ease;
-        }
-        
-        .thank-you-container.active .thank-you-message {
-            transform: translateY(0);
-        }
-        
-        .thank-you-message h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #4facfe;
-        }
-        
-        .thank-you-message p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        /* Scroll prevention when thank you is active */
-        body.no-scroll {
-            overflow: hidden;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 20px;
-            }
-            
-            .form-title {
-                font-size: 1.5rem;
-            }
-            
-            .stats {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .stat-item {
-                width: 80%;
-            }
-            
-            nav ul {
-                justify-content: center;
-            }
-            
-            nav li {
-                margin: 5px;
-            }
-            
-            nav a {
-                padding: 8px 10px;
-                font-size: 0.9rem;
-            }
-            
-            .logo {
-                font-size: 1.8rem;
-            }
+            font-weight: bold;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Thank you message container (hidden by default) -->
-    <div class="thank-you-container" id="thankYouContainer">
-        <div class="thank-you-message">
-            <h2>Thank You!</h2>
-            <p>You have been successfully logged out.</p>
-            <p>Redirecting to login page...</p>
-        </div>
-    </div>
-
-    <div class="header">
-        <div class="container">
-            <nav>
-                <ul>
-                    <li><a href="home_page.html">HOME</a></li>
-                    <li><a href="ABOUT.HTML">ABOUT</a></li>
-                    <li><a href="schedule.html">EXAM DATES</a></li>
-                    <li><a href="#" id="logoutBtn">LOGOUT</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="logo">QUESTION PAPER GENERATOR</div>
+    <!-- User Login Page -->
+    <div id="userLogin">
+        <button class="admin-btn" onclick="showAdminLogin()">
+            <i class="fas fa-user-shield"></i> Admin
+        </button>
         
-        <div class="main-content">
-            <h2 class="form-title">Generate Custom Question Paper</h2>
-            
-            <div class="form-group">
-                <label for="year"><i class="fas fa-calendar-alt"></i> Select Academic Year</label>
-                <select id="year" class="form-control">
-                    <option value="">-- Select Year --</option>
-                    <option value="1">First Year (Fundamentals)</option>
-                    <option value="2">Second Year (Core Concepts)</option>
-                    <option value="3">Third Year (Specialization)</option>
-                    <option value="4">Fourth Year (Advanced Topics)</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="branch"><i class="fas fa-code-branch"></i> Select Branch</label>
-                <select id="branch" class="form-control">
-                    <option value="">-- Select Branch --</option>
-                    <option value="CSE">Computer Science & Engineering (CSE)</option>
-                    <option value="ECE">Electronics & Communication Engineering (ECE)</option>
-                    <option value="MECH">Mechanical Engineering (MECH)</option>
-                    <option value="EEE">Electrical & Electronics Engineering (EEE)</option>
-                    <option value="CIVIL">Civil Engineering (CIVIL)</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="subject"><i class="fas fa-book"></i> Select Subject</label>
-                <select id="subject" class="form-control">
-                    <option value="">-- Please select Year and Branch first --</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="paperType"><i class="fas fa-file-alt"></i> Paper Type</label>
-                <select id="paperType" class="form-control">
-                    <option value="mid">Mid-Semester Exam</option>
-                    <option value="final">Final Exam</option>
-                    <option value="quiz">Quiz</option>
-                    <option value="mock">Mock Test</option>
-                </select>
-            </div>
-            
-            <div class="btn-container">
-                <button class="btn" onclick="generatePaper()">
-                    <i class="fas fa-cogs"></i> Generate Question Paper
-                </button>
-            </div>
-            
-            <div class="info-box">
-                <h3 class="info-title">Why Use Our Question Paper Generator?</h3>
-                <p class="info-content">
-                    Our platform helps students practice effectively with customized question papers. 
-                    With over 5000+ questions in our database and intelligent paper generation algorithms, 
-                    we ensure you get the best practice material tailored to your curriculum.
-                </p>
-                
-                <div class="stats">
-                    <div class="stat-item">
-                        <div class="stat-value">4</div>
-                        <div class="stat-label">Academic Years</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">Engineering Branches</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">200+</div>
-                        <div class="stat-label">Subjects Covered</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">5000+</div>
-                        <div class="stat-label">Questions</div>
-                    </div>
+        <div class="login-box">
+            <div class="center-text">USER LOGIN</div>
+            <form action="home_page.html" method="get">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+
+                <div class="button-container">
+                    <button type="submit">Login</button>
+                    <button type="button" class="cancelbtn" onclick="clearForm()">Cancel</button>
                 </div>
+                
+                <div class="remember-container">
+                    <input type="checkbox" checked="checked" name="remember" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+            </form>
+            
+            <div class="form-footer">
+                Forgot <a href="forgot_password.html">password?</a> • No account? <a href="signup.html">Signup</a>
             </div>
         </div>
+    </div>
     
-    <script>
-        // Subject database for B.Tech curriculum
-        const subjectsDatabase = {
-            "CSE": {
-                "1": [
-                    "Mathematics-I",
-                    "Engineering Physics",
-                    "Programming Fundamentals",
-                    "Engineering Graphics",
-                    "Environmental Science"
-                ],
-                "2": [
-                    "Data Structures & Algorithms",
-                    "Digital Logic Design",
-                    "Discrete Mathematics",
-                    "Object Oriented Programming",
-                    "Database Management Systems"
-                ],
-                "3": [
-                    "Operating Systems",
-                    "Computer Networks",
-                    "Software Engineering",
-                    "Theory of Computation",
-                    "Web Technologies",
-                    "Machine Learning"
-                ],
-                "4": [
-                    "Artificial Intelligence",
-                    "Cloud Computing",
-                    "Big Data Analytics",
-                    "Cybersecurity",
-                    "Internet of Things",
-                    "Project Work"
-                ]
-            },
-            "ECE": {
-                "1": [
-                    "Mathematics-I",
-                    "Engineering Physics",
-                    "Basic Electronics",
-                    "Engineering Graphics",
-                    "Environmental Science"
-                ],
-                "2": [
-                    "Analog Electronics",
-                    "Digital Electronics",
-                    "Signals & Systems",
-                    "Network Analysis",
-                    "Electromagnetic Theory"
-                ],
-                "3": [
-                    "Communication Systems",
-                    "Microprocessors",
-                    "Digital Signal Processing",
-                    "VLSI Design",
-                    "Control Systems"
-                ],
-                "4": [
-                    "Wireless Communication",
-                    "Embedded Systems",
-                    "Optical Communication",
-                    "Satellite Communication",
-                    "Project Work"
-                ]
-            },
-            "MECH": {
-                "1": [
-                    "Mathematics-I",
-                    "Engineering Physics",
-                    "Engineering Mechanics",
-                    "Engineering Graphics",
-                    "Environmental Science"
-                ],
-                "2": [
-                    "Thermodynamics",
-                    "Fluid Mechanics",
-                    "Strength of Materials",
-                    "Manufacturing Processes",
-                    "Material Science"
-                ],
-                "3": [
-                    "Heat Transfer",
-                    "Machine Design",
-                    "Dynamics of Machinery",
-                    "Automobile Engineering",
-                    "Robotics"
-                ],
-                "4": [
-                    "Finite Element Analysis",
-                    "Mechatronics",
-                    "Refrigeration & Air Conditioning",
-                    "Industrial Engineering",
-                    "Project Work"
-                ]
-            },
-            "EEE": {
-                "1": [
-                    "Mathematics-I",
-                    "Engineering Physics",
-                    "Electrical Circuits",
-                    "Engineering Graphics",
-                    "Environmental Science"
-                ],
-                "2": [
-                    "Analog Electronics",
-                    "Digital Electronics",
-                    "Electromagnetic Fields",
-                    "Network Analysis",
-                    "Electrical Machines"
-                ],
-                "3": [
-                    "Power Systems",
-                    "Control Systems",
-                    "Power Electronics",
-                    "Measurements & Instrumentation",
-                    "Renewable Energy Systems"
-                ],
-                "4": [
-                    "High Voltage Engineering",
-                    "Power System Protection",
-                    "Smart Grid Technologies",
-                    "Industrial Automation",
-                    "Project Work"
-                ]
-            },
-            "CIVIL": {
-                "1": [
-                    "Mathematics-I",
-                    "Engineering Physics",
-                    "Engineering Mechanics",
-                    "Engineering Graphics",
-                    "Environmental Science"
-                ],
-                "2": [
-                    "Structural Analysis",
-                    "Fluid Mechanics",
-                    "Geotechnical Engineering",
-                    "Surveying",
-                    "Building Materials"
-                ],
-                "3": [
-                    "Design of Concrete Structures",
-                    "Design of Steel Structures",
-                    "Transportation Engineering",
-                    "Hydrology",
-                    "Construction Management"
-                ],
-                "4": [
-                    "Earthquake Engineering",
-                    "Environmental Engineering",
-                    "Infrastructure Planning",
-                    "Remote Sensing",
-                    "Project Work"
-                ]
-            }
-        };
-
-        // Get DOM elements
-        const yearSelect = document.getElementById('year');
-        const branchSelect = document.getElementById('branch');
-        const subjectSelect = document.getElementById('subject');
-        const logoutBtn = document.getElementById('logoutBtn');
-        const thankYouContainer = document.getElementById('thankYouContainer');
-
-        // Event listeners for dynamic subject loading
-        yearSelect.addEventListener('change', updateSubjects);
-        branchSelect.addEventListener('change', updateSubjects);
+    <!-- Admin Login Page (hidden by default) -->
+    <div id="adminLogin" style="display: none;">
+        <button class="back-btn" onclick="showUserLogin()">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
         
-        // Logout functionality
-        logoutBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Prevent scrolling on the body
-            document.body.classList.add('no-scroll');
-            
-            // Show thank you message
-            thankYouContainer.classList.add('active');
-            
-            // Redirect to login page after 3 seconds
-            setTimeout(function() {
-                window.location.href = 'login.html';
-            }, 3000);
-        });
+        <div class="login-box admin-login">
+            <div class="center-text">ADMIN LOGIN</div>
+            <form id="adminForm" onsubmit="return validateAdmin()">
+                <label for="adminUname"><b>Admin Username</b></label>
+                <input type="text" id="adminUname" placeholder="Enter Admin Username" required>
 
-        // Function to update subjects based on selected year and branch
-        function updateSubjects() {
-            const year = yearSelect.value;
-            const branch = branchSelect.value;
-            
-            // Clear existing options
-            subjectSelect.innerHTML = '';
-            
-            if (!year || !branch) {
-                subjectSelect.innerHTML = '<option value="">-- Please select Year and Branch first --</option>';
-                return;
-            }
-            
-            // Get subjects for selected year and branch
-            const subjects = subjectsDatabase[branch][year];
-            
-            if (subjects && subjects.length > 0) {
-                // Add default option
-                subjectSelect.innerHTML = '<option value="">-- Select Subject --</option>';
+                <label for="adminPsw"><b>Password</b></label>
+                <input type="password" id="adminPsw" placeholder="Enter Admin Password" required>
+
+                <div class="button-container">
+                    <button type="submit">Login</button>
+                    <button type="button" class="cancelbtn" onclick="clearAdminForm()">Cancel</button>
+                </div>
                 
-                // Add subjects to dropdown
-                subjects.forEach(subject => {
-                    const option = document.createElement('option');
-                    option.value = subject;
-                    option.textContent = subject;
-                    subjectSelect.appendChild(option);
-                });
+                <div id="adminError" class="error-message">
+                    Invalid credentials. Please try again.
+                </div>
+            </form>
+            
+            
+        </div>
+    </div>
+
+    <script>
+        // Toggle between user and admin login
+        function showAdminLogin() {
+            document.getElementById('userLogin').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminError').style.display = 'none';
+        }
+        
+        function showUserLogin() {
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('userLogin').style.display = 'block';
+        }
+        
+        // Clear form functions
+        function clearForm() {
+            document.querySelector('input[name="uname"]').value = '';
+            document.querySelector('input[name="psw"]').value = '';
+            document.querySelector('#remember').checked = false;
+        }
+        
+        function clearAdminForm() {
+            document.getElementById('adminUname').value = '';
+            document.getElementById('adminPsw').value = '';
+            document.getElementById('adminError').style.display = 'none';
+        }
+        
+        // Admin credential validation
+        function validateAdmin() {
+            const username = document.getElementById('adminUname').value;
+            const password = document.getElementById('adminPsw').value;
+            
+            // Correct admin credentials
+            const adminUsername = "admin123";
+            const adminPassword = "admin@2025";
+            
+            if(username === adminUsername && password === adminPassword) {
+                // Redirect to admin dashboard
+                window.location.href = "admin_dashboard.html";
+                return false; // Prevent form submission
             } else {
-                subjectSelect.innerHTML = '<option value="">-- No subjects available for this selection --</option>';
+                // Show error message
+                document.getElementById('adminError').style.display = 'block';
+                // Clear password field
+                document.getElementById('adminPsw').value = '';
+                return false; // Prevent form submission
             }
         }
-
-        // Function to generate question paper
-        function generatePaper() {
-            const year = yearSelect.value;
-            const branch = branchSelect.value;
-            const subject = subjectSelect.value;
-            const paperType = document.getElementById('paperType').value;
-            
-            if (!year || !branch || !subject) {
-                alert('Please select Year, Branch, and Subject before generating the paper.');
-                return;
-            }
-            
-            // Success message with generated details
-            const paperTypes = {
-                'mid': 'Mid-Semester Exam',
-                'final': 'Final Exam',
-                'quiz': 'Quiz',
-                'mock': 'Mock Test'
-            };
-            
-            // Create a glass effect notification
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(10px);
-                color: white;
-                padding: 20px 40px;
-                border-radius: 12px;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-                z-index: 1000;
-                text-align: center;
-                animation: fadeIn 0.5s, fadeOut 0.5s 2.5s;
-            `;
-            
-            notification.innerHTML = `
-                <h3 style="margin-bottom: 10px; color: #4facfe;">Question Paper Generated!</h3>
-                <p>Year: ${yearSelect.options[yearSelect.selectedIndex].text}</p>
-                <p>Branch: ${branchSelect.options[branchSelect.selectedIndex].text}</p>
-                <p>Subject: ${subject}</p>
-                <p>Paper Type: ${paperTypes[paperType]}</p>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Add CSS for animation
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes fadeIn {
-                    from { opacity: 0; top: 0; }
-                    to { opacity: 1; top: 20px; }
-                }
-                @keyframes fadeOut {
-                    from { opacity: 1; top: 20px; }
-                    to { opacity: 0; top: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Remove notification after animation
-            setTimeout(() => {
-                document.body.removeChild(notification);
-                document.head.removeChild(style);
-            }, 3000);
-        }
-
-        // Function to reset scroll position on page load
-        window.addEventListener('load', function() {
-            window.scrollTo(0, 0);
-        });
     </script>
 </body>
 </html>
