@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Question Paper Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0056b3 0%, #007b5e 100%);
+            min-height: 100vh;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="100%" height="100%" fill="%230056b3"/><path d="M40,40 Q100,20 160,40 T200,100 Q180,160 160,200 T100,180 Q20,160 40,100 T40,40" fill="%23007b5e" opacity="0.3"/></svg>');
+            background-size: cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 10px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        nav i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        .logo::after {
+            content: '';
+            display: block;
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 2px;
+            margin: 10px auto;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.8rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 2px;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+        
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #4facfe;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 2px;
+        }
+        
+        .about-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .mission-vision {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .mission, .vision {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .mission:hover, .vision:hover {
+            transform: translateY(-10px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .mission h3, .vision h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #00f2fe;
+        }
+        
+        .mission p, .vision p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 2rem;
+        }
+        
+        .team-section {
+            margin-top: 50px;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .team-member {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .member-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .member-name {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #4facfe;
+        }
+        
+        .member-role {
+            font-size: 1.1rem;
+            color: #00f2fe;
+            margin-bottom: 15px;
+        }
+        
+        .member-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .stats-section {
+            margin-top: 50px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        
+        .contact-section {
+            margin-top: 50px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .contact-card {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-10px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .contact-icon {
+            font-size: 2.5rem;
+            color: #00f2fe;
+            margin-bottom: 20px;
+        }
+        
+        .contact-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4facfe;
+        }
+        
+        .contact-card p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+        
+        /* Floating elements for background */
+        .floating {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
+            z-index: -1;
+            animation: float 15s infinite linear;
+        }
+        
+        .floating:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            top: 10%;
+            left: 5%;
+            animation-duration: 20s;
+        }
+        
+        .floating:nth-child(2) {
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            left: 80%;
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+        
+        .floating:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 40%;
+            left: 90%;
+            animation-duration: 15s;
+        }
+        
+        /* Thank You Overlay */
+        .thank-you-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/thanks.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .thank-you-container.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .thank-you-message {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+        }
+        
+        .thank-you-container.active .thank-you-message {
+            transform: translateY(0);
+        }
+        
+        .thank-you-message h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4facfe;
+        }
+        
+        .thank-you-message p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        /* Scroll prevention when thank you is active */
+        body.no-scroll {
+            overflow: hidden;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-20px, 50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .glass-panel {
+                padding: 25px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 5px;
+            }
+            
+            nav a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="floating"></div>
+    <div class="floating"></div>
+    <div class="floating"></div>
+    
+    <!-- Thank you message container (hidden by default) -->
+    <div class="thank-you-container" id="thankYouContainer">
+        <div class="thank-you-message">
+            <h2>Thank You!</h2>
+            <p>You have been successfully logged out.</p>
+            <p>Redirecting to login page...</p>
+        </div>
+    </div>
+
+    <div class="header">
+        <nav>
+            <ul>
+                <li><a href="home_page.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="ABOUT.HTML" style="background: rgba(255, 255, 255, 0.2);"><i class="fas fa-info-circle"></i> ABOUT</a></li>
+                <li><a href="schedule.html"><i class="fas fa-calendar-alt"></i> EXAM DATES</a></li>
+                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="logo">ABOUT US</div>
+        <h1 class="page-title">The Story Behind Our Platform</h1>
+        
+        <div class="glass-panel">
+            <div class="about-content">
+                <p>Welcome to the Question Paper Generator, a revolutionary platform designed to transform the way students prepare for exams. Our journey began in 2020 when a group of engineering students recognized the challenges faced by their peers in accessing quality practice materials.</p>
+                
+                <p>Frustrated by the lack of tailored resources and outdated question banks, we set out to create a solution that would empower students to take control of their exam preparation. Today, our platform serves thousands of students across multiple institutions, helping them achieve academic excellence.</p>
+            </div>
+            
+            <div class="mission-vision">
+                <div class="mission">
+                    <div class="icon-circle">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>To provide students with personalized, high-quality practice materials that adapt to their curriculum and learning needs, making exam preparation more effective and less stressful.</p>
+                </div>
+                
+                <div class="vision">
+                    <div class="icon-circle">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Our Vision</h3>
+                    <p>To become the leading platform for academic preparation, empowering every student to reach their full potential through intelligent, accessible learning tools.</p>
+                </div>
+            </div>
+            
+            
+            <div class="stats-section">
+                <h2 class="section-title">By The Numbers</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">5,000+</div>
+                        <div class="stat-label">Questions in Database</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Papers Generated</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">200+</div>
+                        <div class="stat-label">Subjects Covered</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">User Satisfaction</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-section">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email Us</h3>
+                        <p>bhargavateja.borra@gmail.com</p>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Call Us</h3>
+                        <p>+1 (913) 337-3606</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2020 Question Paper Generator | Empowering Students </p>
+            <p>Designed with ❤️ for the future of education</p>
+        </div>
+    </div>
+
+    <script>
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Prevent scrolling on the body
+            document.body.classList.add('no-scroll');
+            
+            // Show thank you message
+            document.getElementById('thankYouContainer').classList.add('active');
+            
+            // Redirect to login page after 3 seconds
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 3000);
+        });
+        
+        // Animation for team members
+        const teamMembers = document.querySelectorAll('.team-member');
+        teamMembers.forEach(member => {
+            member.addEventListener('mouseenter', () => {
+                const photo = member.querySelector('.member-photo');
+                photo.style.transform = 'scale(1.1)';
+                photo.style.background = 'linear-gradient(135deg, #00f2fe, #4facfe)';
+            });
+            
+            member.addEventListener('mouseleave', () => {
+                const photo = member.querySelector('.member-photo');
+                photo.style.transform = 'scale(1)';
+                photo.style.background = 'linear-gradient(135deg, #4facfe, #00f2fe)';
+            });
+        });
+        
+        // Reset scroll position on page load
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>

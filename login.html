@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        body {
+            background: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+        }
+        
+        .admin-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #1a2a6c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-btn i {
+            margin-right: 8px;
+        }
+        
+        .login-box {
+            background-color: rgba(150, 140, 140, 0.9);
+            padding: 30px;
+            border: 8px solid black;
+            width: 400px;
+            position: relative;
+            z-index: 1;
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid rgb(122, 43, 43);
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        button {
+            background-color: #c01b52;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100px;
+            font-weight: bold;
+        }
+
+        .cancelbtn {
+            background-color: #f44336;
+        }
+
+        .center-text {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #1a1a1a;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .center-text::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: #c01b52;
+        }
+
+        .form-footer {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .form-footer a {
+            color: #1a2a6c;
+            text-decoration: none;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .remember-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .remember-container label {
+            margin-left: 8px;
+            color: #333;
+        }
+        
+        /* Admin login specific styles */
+        .admin-login .center-text {
+            color: #1a2a6c;
+        }
+        
+        .admin-login .center-text::after {
+            background: #1a2a6c;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #c01b52;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+        }
+        
+        .back-btn i {
+            margin-right: 8px;
+        }
+        
+        .error-message {
+            color: #ff0000;
+            background: rgba(255, 200, 200, 0.7);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- User Login Page -->
+    <div id="userLogin">
+        <button class="admin-btn" onclick="showAdminLogin()">
+            <i class="fas fa-user-shield"></i> Admin
+        </button>
+        
+        <div class="login-box">
+            <div class="center-text">USER LOGIN</div>
+            <form action="home_page.html" method="get">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+
+                <div class="button-container">
+                    <button type="submit">Login</button>
+                    <button type="button" class="cancelbtn" onclick="clearForm()">Cancel</button>
+                </div>
+                
+                <div class="remember-container">
+                    <input type="checkbox" checked="checked" name="remember" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+            </form>
+            
+            <div class="form-footer">
+                Forgot <a href="forgot_password.html">password?</a> • No account? <a href="signup.html">Signup</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Login Page (hidden by default) -->
+    <div id="adminLogin" style="display: none;">
+        <button class="back-btn" onclick="showUserLogin()">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        
+        <div class="login-box admin-login">
+            <div class="center-text">ADMIN LOGIN</div>
+            <form id="adminForm" onsubmit="return validateAdmin()">
+                <label for="adminUname"><b>Admin Username</b></label>
+                <input type="text" id="adminUname" placeholder="Enter Admin Username" required>
+
+                <label for="adminPsw"><b>Password</b></label>
+                <input type="password" id="adminPsw" placeholder="Enter Admin Password" required>
+
+                <div class="button-container">
+                    <button type="submit">Login</button>
+                    <button type="button" class="cancelbtn" onclick="clearAdminForm()">Cancel</button>
+                </div>
+                
+                <div id="adminError" class="error-message">
+                    Invalid credentials. Please try again.
+                </div>
+            </form>
+            
+            
+        </div>
+    </div>
+
+    <script>
+        // Toggle between user and admin login
+        function showAdminLogin() {
+            document.getElementById('userLogin').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'block';
+            document.getElementById('adminError').style.display = 'none';
+        }
+        
+        function showUserLogin() {
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('userLogin').style.display = 'block';
+        }
+        
+        // Clear form functions
+        function clearForm() {
+            document.querySelector('input[name="uname"]').value = '';
+            document.querySelector('input[name="psw"]').value = '';
+            document.querySelector('#remember').checked = false;
+        }
+        
+        function clearAdminForm() {
+            document.getElementById('adminUname').value = '';
+            document.getElementById('adminPsw').value = '';
+            document.getElementById('adminError').style.display = 'none';
+        }
+        
+        // Admin credential validation
+        function validateAdmin() {
+            const username = document.getElementById('adminUname').value;
+            const password = document.getElementById('adminPsw').value;
+            
+            // Correct admin credentials
+            const adminUsername = "admin123";
+            const adminPassword = "admin@2025";
+            
+            if(username === adminUsername && password === adminPassword) {
+                // Redirect to admin dashboard
+                window.location.href = "admin_dashboard.html";
+                return false; // Prevent form submission
+            } else {
+                // Show error message
+                document.getElementById('adminError').style.display = 'block';
+                // Clear password field
+                document.getElementById('adminPsw').value = '';
+                return false; // Prevent form submission
+            }
+        }
+    </script>
+</body>
+</html>

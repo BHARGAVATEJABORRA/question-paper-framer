@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Schedule</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0056b3 0%, #007b5e 100%);
+            min-height: 100vh;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="100%" height="100%" fill="%230056b3"/><path d="M40,40 Q100,20 160,40 T200,100 Q180,160 160,200 T100,180 Q20,160 40,100 T40,40" fill="%23007b5e" opacity="0.3"/></svg>');
+            background-size: cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        nav li {
+            margin: 0 10px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        nav i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        .logo::after {
+            content: '';
+            display: block;
+            width: 150px;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 2px;
+            margin: 10px auto;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 2px;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+        }
+        
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .schedule-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .semester-schedule {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .semester-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #4facfe;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .semester-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            border-radius: 2px;
+        }
+        
+        .exam-list {
+            list-style: none;
+        }
+        
+        .exam-item {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .exam-item:last-child {
+            border-bottom: none;
+        }
+        
+        .exam-details {
+            flex: 1;
+        }
+        
+        .exam-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .exam-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .exam-date i {
+            margin-right: 8px;
+            color: #00f2fe;
+        }
+        
+        .exam-type {
+            background: rgba(79, 172, 254, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .calendar-highlight {
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .calendar {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .calendar-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #4facfe;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-cell {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .calendar-cell.active {
+            background: #4facfe;
+            color: #fff;
+            font-weight: bold;
+            transform: scale(1.1);
+        }
+        
+        .calendar-cell:hover {
+            background: rgba(79, 172, 254, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .calendar-weekday {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .reminder-section {
+            margin-top: 40px;
+        }
+        
+        .reminder-box {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .reminder-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #4facfe;
+            display: flex;
+            align-items: center;
+        }
+        
+        .reminder-title i {
+            margin-right: 10px;
+        }
+        
+        .reminder-list {
+            padding-left: 25px;
+        }
+        
+        .reminder-list li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+        
+        /* Floating elements for background */
+        .floating {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.3), rgba(0, 242, 254, 0.3));
+            z-index: -1;
+            animation: float 15s infinite linear;
+        }
+        
+        .floating:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            top: 10%;
+            left: 5%;
+            animation-duration: 20s;
+        }
+        
+        .floating:nth-child(2) {
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            left: 80%;
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+        
+        .floating:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 40%;
+            left: 90%;
+            animation-duration: 15s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-20px, 50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+        
+        /* Thank You Overlay */
+        .thank-you-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/thanks.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .thank-you-container.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .thank-you-message {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            margin: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.5s ease;
+        }
+        
+        .thank-you-container.active .thank-you-message {
+            transform: translateY(0);
+        }
+        
+        .thank-you-message h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4facfe;
+        }
+        
+        .thank-you-message p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        /* Scroll prevention when thank you is active */
+        body.no-scroll {
+            overflow: hidden;
+        }
+        
+        @media (max-width: 768px) {
+            .glass-panel {
+                padding: 20px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 5px;
+            }
+            
+            nav a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .calendar-grid {
+                gap: 5px;
+            }
+            
+            .calendar-cell {
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background elements -->
+    <div class="floating"></div>
+    <div class="floating"></div>
+    <div class="floating"></div>
+    
+    <!-- Thank you message container (hidden by default) -->
+    <div class="thank-you-container" id="thankYouContainer">
+        <div class="thank-you-message">
+            <h2>Thank You!</h2>
+            <p>You have been successfully logged out.</p>
+            <p>Redirecting to login page...</p>
+        </div>
+    </div>
+
+    <div class="header">
+        <nav>
+            <ul>
+                <li><a href="home_page.html"><i class="fas fa-home"></i> HOME</a></li>
+                <li><a href="ABOUT.HTML"><i class="fas fa-info-circle"></i> ABOUT</a></li>
+                <li><a href="schedule.html" style="background: rgba(255, 255, 255, 0.2);"><i class="fas fa-calendar-alt"></i> EXAM DATES</a></li>
+                <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> LOGOUT</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="logo">EXAM SCHEDULE</div>
+        <h1 class="page-title">Upcoming Examination Dates</h1>
+        
+        <div class="glass-panel">
+            <div class="schedule-container">
+                <div class="semester-schedule">
+                    <h2 class="semester-title">First Year</h2>
+                    <ul class="exam-list">
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Mathematics-I</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> October 15, 2020</div>
+                            </div>
+                            <div class="exam-type">Mid-Term</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Physics</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> October 17, 2020</div>
+                            </div>
+                            <div class="exam-type">Mid-Term</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Programming Fundamentals</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> November 25, 2020</div>
+                            </div>
+                            <div class="exam-type">Final</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Engineering Graphics</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> November 28, 2020</div>
+                            </div>
+                            <div class="exam-type">Final</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="semester-schedule">
+                    <h2 class="semester-title">Second Year</h2>
+                    <ul class="exam-list">
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Data Structures</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> October 18, 2020</div>
+                            </div>
+                            <div class="exam-type">Mid-Term</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Digital Logic Design</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> October 20, 2020</div>
+                            </div>
+                            <div class="exam-type">Mid-Term</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Database Systems</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> November 30, 2020</div>
+                            </div>
+                            <div class="exam-type">Final</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Discrete Mathematics</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> December 2, 2020</div>
+                            </div>
+                            <div class="exam-type">Final</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="semester-schedule">
+                    <h2 class="semester-title">Third Year</h2>
+                    <ul class="exam-list">
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Operating Systems</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> October 22, 2020</div>
+                            </div>
+                            <div class="exam-type">Mid-Term</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Computer Networks</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> October 24, 2020</div>
+                            </div>
+                            <div class="exam-type">Mid-Term</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Machine Learning</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> December 5, 2020</div>
+                            </div>
+                            <div class="exam-type">Final</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Web Technologies</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> December 7, 2020</div>
+                            </div>
+                            <div class="exam-type">Final</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Added Fourth Year Section -->
+                <div class="semester-schedule">
+                    <h2 class="semester-title">Fourth Year</h2>
+                    <ul class="exam-list">
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Advanced Algorithms</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> October 26, 2020</div>
+                            </div>
+                            <div class="exam-type">Mid-Term</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Cloud Computing</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> October 28, 2020</div>
+                            </div>
+                            <div class="exam-type">Mid-Term</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Project Management</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> December 10, 2020</div>
+                            </div>
+                            <div class="exam-type">Final</div>
+                        </li>
+                        <li class="exam-item">
+                            <div class="exam-details">
+                                <div class="exam-name">Thesis Defense</div>
+                                <div class="exam-date"><i class="fas fa-calendar-day"></i> December 15, 2020</div>
+                            </div>
+                            <div class="exam-type">Final</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Calendar Highlight -->
+            <div class="calendar-highlight">
+                <div class="calendar">
+                    <div class="calendar-title">November 2020</div>
+                    <div class="calendar-grid">
+                        <div class="calendar-cell calendar-weekday">Sun</div>
+                        <div class="calendar-cell calendar-weekday">Mon</div>
+                        <div class="calendar-cell calendar-weekday">Tue</div>
+                        <div class="calendar-cell calendar-weekday">Wed</div>
+                        <div class="calendar-cell calendar-weekday">Thu</div>
+                        <div class="calendar-cell calendar-weekday">Fri</div>
+                        <div class="calendar-cell calendar-weekday">Sat</div>
+                        
+                        <div class="calendar-cell"></div>
+                        <div class="calendar-cell"></div>
+                        <div class="calendar-cell"></div>
+                        <div class="calendar-cell">1</div>
+                        <div class="calendar-cell">2</div>
+                        <div class="calendar-cell">3</div>
+                        <div class="calendar-cell">4</div>
+                        <div class="calendar-cell">5</div>
+                        <div class="calendar-cell">6</div>
+                        <div class="calendar-cell">7</div>
+                        <div class="calendar-cell">8</div>
+                        <div class="calendar-cell">9</div>
+                        <div class="calendar-cell">10</div>
+                        <div class="calendar-cell">11</div>
+                        <div class="calendar-cell active">12</div>
+                        <div class="calendar-cell">13</div>
+                        <div class="calendar-cell">14</div>
+                        <div class="calendar-cell active">15</div>
+                        <div class="calendar-cell">16</div>
+                        <div class="calendar-cell active">17</div>
+                        <div class="calendar-cell">18</div>
+                        <div class="calendar-cell">19</div>
+                        <div class="calendar-cell">20</div>
+                        <div class="calendar-cell">21</div>
+                        <div class="calendar-cell">22</div>
+                        <div class="calendar-cell">23</div>
+                        <div class="calendar-cell">24</div>
+                        <div class="calendar-cell active">25</div>
+                        <div class="calendar-cell">26</div>
+                        <div class="calendar-cell">27</div>
+                        <div class="calendar-cell active">28</div>
+                        <div class="calendar-cell active">29</div>
+                        <div class="calendar-cell active">30</div>
+                        <div class="calendar-cell"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reminder-section">
+                <h3 class="reminder-title"><i class="fas fa-bell"></i> Important Reminders</h3>
+                <div class="reminder-box">
+                    <ul class="reminder-list">
+                        <li>Mid-term exams will be held from October 15 to October 25, 2020</li>
+                        <li>Final exams are scheduled from November 25 to December 15, 2020</li>
+                        <li>Exam halls will open 30 minutes before each examination</li>
+                        <li>Students must bring their ID cards and examination slips</li>
+                        <li>No electronic devices are allowed in the examination hall</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            &copy; 2020 University Exam Schedule. All rights reserved.
+        </div>
+    </div>
+    
+    <script>
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Prevent scrolling on the body
+            document.body.classList.add('no-scroll');
+            
+            // Show thank you message
+            document.getElementById('thankYouContainer').classList.add('active');
+            
+            // Redirect to login page after 3 seconds
+            setTimeout(function() {
+                window.location.href = 'login.html';
+            }, 3000);
+        });
+        
+        // Highlight today's date
+        const today = new Date();
+        const calendarCells = document.querySelectorAll('.calendar-cell');
+        
+        if (today.getDate() <= 30) {
+            calendarCells.forEach(cell => {
+                if (parseInt(cell.textContent) === today.getDate()) {
+                    cell.classList.add('active');
+                    cell.innerHTML = `<strong>${today.getDate()}</strong>`;
+                }
+            });
+        }
+        
+        // Reset scroll position on page load
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+    </script>
+</body>
+</html>
