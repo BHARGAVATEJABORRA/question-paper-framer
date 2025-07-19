@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Question Paper</title>
+  <style>
+    body {font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto;}
+    label {display:block; margin-top:10px;}
+    input, select {width:100%; padding:8px; margin-top:4px;}
+    button {margin-top:15px; padding:10px 20px;}
+  </style>
+</head>
+<body>
+  <h2>Upload Question Paper</h2>
+  <form id="uploadForm">
+    <label>Academic Year
+      <select id="uYear" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+    </label>
+    <label>Branch
+      <select id="uBranch" required>
+        <option value="CSE">CSE</option>
+        <option value="ECE">ECE</option>
+        <option value="MECH">MECH</option>
+        <option value="EEE">EEE</option>
+        <option value="CIVIL">CIVIL</option>
+      </select>
+    </label>
+    <label>Subject
+      <input id="uSubject" required placeholder="e.g. Mathematics-I">
+    </label>
+    <label>Paper Type
+      <select id="uType" required>
+        <option value="final">final</option>
+        <option value="mid">mid</option>
+        <option value="mock">mock</option>
+        <option value="quiz">quiz</option>
+      </select>
+    </label>
+    <label>PDF File
+      <input type="file" id="uFile" accept="application/pdf" required>
+    </label>
+    <button type="submit">Upload</button>
+  </form>
+  <p style="margin-top:20px; font-size:0.9em">This tool uses the File System Access API. Choose the <strong>project root directory</strong> when prompted.</p>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = document.getElementById('uFile').files[0];
+      if (!file) { alert('Select a PDF file'); return; }
+      await QPF.uploadPDF({
+        year: document.getElementById('uYear').value,
+        branch: document.getElementById('uBranch').value,
+        subject: document.getElementById('uSubject').value,
+        type: document.getElementById('uType').value,
+        file
+      });
+    });
+  </script>
+</body>
+</html>
