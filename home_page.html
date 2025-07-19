@@ -449,6 +449,9 @@
                 <button class="btn" onclick="generatePaper()">
                     <i class="fas fa-cogs"></i> Generate Question Paper
                 </button>
+                <a id="downloadLink" class="btn" href="#" style="display:none; margin-left:10px;" download>
+                    <i class="fas fa-download"></i> Download PDF
+                </a>
             </div>
             
             <div class="info-box">
@@ -480,6 +483,7 @@
             </div>
         </div>
     
+    <script src="js/app.js"></script>
     <script>
         // Subject database for B.Tech curriculum
         const subjectsDatabase = {
@@ -696,73 +700,25 @@
         }
 
         // Function to generate question paper
-        function generatePaper() {
+        async function generatePaper() {
             const year = yearSelect.value;
             const branch = branchSelect.value;
             const subject = subjectSelect.value;
             const paperType = document.getElementById('paperType').value;
-            
+
             if (!year || !branch || !subject) {
                 alert('Please select Year, Branch, and Subject before generating the paper.');
                 return;
             }
-            
-            // Success message with generated details
-            const paperTypes = {
-                'mid': 'Mid-Semester Exam',
-                'final': 'Final Exam',
-                'quiz': 'Quiz',
-                'mock': 'Mock Test'
-            };
-            
-            // Create a glass effect notification
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(10px);
-                color: white;
-                padding: 20px 40px;
-                border-radius: 12px;
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-                z-index: 1000;
-                text-align: center;
-                animation: fadeIn 0.5s, fadeOut 0.5s 2.5s;
-            `;
-            
-            notification.innerHTML = `
-                <h3 style="margin-bottom: 10px; color: #4facfe;">Question Paper Generated!</h3>
-                <p>Year: ${yearSelect.options[yearSelect.selectedIndex].text}</p>
-                <p>Branch: ${branchSelect.options[branchSelect.selectedIndex].text}</p>
-                <p>Subject: ${subject}</p>
-                <p>Paper Type: ${paperTypes[paperType]}</p>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Add CSS for animation
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes fadeIn {
-                    from { opacity: 0; top: 0; }
-                    to { opacity: 1; top: 20px; }
-                }
-                @keyframes fadeOut {
-                    from { opacity: 1; top: 20px; }
-                    to { opacity: 0; top: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Remove notification after animation
-            setTimeout(() => {
-                document.body.removeChild(notification);
-                document.head.removeChild(style);
-            }, 3000);
+
+            const downloadLink = document.getElementById('downloadLink');
+            await QPF.generateAndOpenPDF({
+                year,
+                branch,
+                subject,
+                type: paperType,
+                downloadLink
+            });
         }
 
         // Function to reset scroll position on page load

@@ -773,7 +773,7 @@
                             <input type="text" id="genTopics" class="form-control" placeholder="e.g., Processes, Memory Management, File Systems">
                         </div>
                         
-                        <button class="btn">
+                        <button id="generateBtn" class="btn">
                             <i class="fas fa-cogs"></i> Generate Paper
                         </button>
                         <a id="downloadSample" class="btn" href="#" style="display:none;" download>
@@ -871,6 +871,7 @@
         </div>
     </div>
     
+    <script src="js/app.js"></script>
     <script>
         // Navigation functionality
         document.querySelectorAll('.nav-links a').forEach(link => {
@@ -1020,9 +1021,6 @@
             if (year && branch && subject && type) {
                 const fileName = encodeURIComponent(subject.replace(/ /g, '_')) + '.pdf';
                 link.href = `sample_papers/${branch}/${year}/${type}/${fileName}`;
-                link.style.display = 'inline-block';
-            } else {
-                link.style.display = 'none';
             }
         }
 
@@ -1036,6 +1034,20 @@
         });
         document.getElementById('genSubject').addEventListener('change', updateDownloadLink);
         document.getElementById('genType').addEventListener('change', updateDownloadLink);
+
+        document.getElementById('generateBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const year = document.getElementById('genYear').value;
+            const branch = document.getElementById('genBranch').value;
+            const subject = document.getElementById('genSubject').value;
+            const type = document.getElementById('genType').value;
+            const link = document.getElementById('downloadSample');
+            if (!year || !branch || !subject || !type) {
+                alert('Please select all fields before generating the paper.');
+                return;
+            }
+            await QPF.generateAndOpenPDF({ year, branch, subject, type, downloadLink: link });
+        });
 
         document.getElementById('upYear').addEventListener('change', () => populateSubjects('upYear', 'upBranch', 'upSubject'));
         document.getElementById('upBranch').addEventListener('change', () => populateSubjects('upYear', 'upBranch', 'upSubject'));
