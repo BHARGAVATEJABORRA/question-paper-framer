@@ -51,7 +51,7 @@
 1. Sign up at [Render](https://render.com) or [Netlify](https://netlify.com)
 2. Connect your GitHub repository
 3. Choose static site deployment and deploy
-
+4. Then you will get access 
 ### 📁 Folder Structure
 
 ```
